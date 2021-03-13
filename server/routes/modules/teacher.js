@@ -1,7 +1,7 @@
 const readLine = require('../../util/File')
 const Achievement = require('../../models/achievement')
 
-//登录
+//辅导员登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
         //读取文件中的账号密码
@@ -30,7 +30,7 @@ function Login(account, password) {
     })
 }
 
-//设计成果
+//辅导员设计成果
 function Desgin(params) {
     return new Promise((resolve, reject) => {
         //解构出参数
@@ -61,6 +61,13 @@ function Desgin(params) {
                 msg: '添加成功！'
             })
         }
+    })
+}
+
+//辅导员审核学生申请的成果
+function Examine(stuNum, achievementId) {
+    return new Promise((resolve, reject) => {
+
     })
 }
 

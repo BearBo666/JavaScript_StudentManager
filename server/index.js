@@ -11,20 +11,29 @@
 
 // x.save()
 
-const qs = require('qs')
+// const qs = require('qs')
 
 
-let attributes = []
-let x1 = { name: 'k1', value: 'v1', required: false }
-let x2 = { name: 'k2', value: 'v2', required: false }
+// let attributes = []
+// let x1 = { name: 'k1', value: 'v1', required: false }
+// let x2 = { name: 'k2', value: 'v2', required: false }
 
 
-attributes.push(x1)
-attributes.push(x2)
+// attributes.push(x1)
+// attributes.push(x2)
 
-let y = qs.stringify({ attributes })
-let z = qs.parse(y)
+// let y = qs.stringify({ attributes })
+// let z = qs.parse(y)
 
-console.log(y)
+// console.log(y)
 
 // console.log(Boolean(z.attrs[0].required) == false)
+
+// const hashTable = require('./struct/hashTable')
+
+// let x = new hashTable(20)
+
+// x.insert(201913137151, 1, 2)
+
+// let y = x.get(201913137151, 2)
+// console.log(y)

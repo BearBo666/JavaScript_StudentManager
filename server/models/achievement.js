@@ -1,4 +1,3 @@
-const Attribute = require('./attribute')
 const { writeFile } = require('../util/File')
 const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\achievement.txt'
 
@@ -20,10 +19,8 @@ class Achievement {
 
     //添加属性
     addAttribute(name, value, required) {
-        //新属性对象
-        const attr = new Attribute(name, value, required)
-        //压入队列
-        this.attribute.push(attr)
+        //压入数组
+        this.attribute.push({ name: name, value: value, required: required })
     }
 
     //将成果存入文本

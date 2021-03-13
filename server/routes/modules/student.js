@@ -1,4 +1,4 @@
-
+const studentAchieve = require('../../models/studentAchieve')
 //学生登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
@@ -31,13 +31,48 @@ function Login(account, password) {
 //学生申请成果
 function Apply(account, achievementId) {
     return new Promise(async (resolve, reject) => {
+        //检查是否存在此学号
         if (!await checkStuden(account)) {
             reject({
-                status: 403,
+                status: 400,
                 msg: '无此学号！'
             })
         } else {
+            //检查是否存在
+            if (!global.$Achievement.get(achievementId)) {
+                reject({
+                    status: 401,
+                    msg: '无此成果！'
+                })
+            } else {
+                //实例化一个学生成果对象
+                const newStuAchieve = new studentAchieve(account, achievementId)
 
+                //存入全局对象
+                global.$StudentAchieve.insert(account, achievementId, newStuAchieve)
+
+                //存入文件
+                newStuAchieve.save()
+
+                resolve({
+                    status: 200,
+                    msg: '录入成功,请等待审核！'
+                })
+            }
+        }
+    })
+}
+
+//学生查看自己的成果
+function GetAchievementList(account) {
+    return new Promise(async (resolve, reject) => {
+        if (!await checkStuden(account)) {
+            reject({
+                status: 403,
+                msg: '无此学号'
+            })
+        } else {
+            
         }
     })
 }

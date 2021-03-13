@@ -1,5 +1,5 @@
-//哈希表
-class HashTable {
+//哈希
+class Hash {
     //构造函数
     constructor(size) {
         //定义哈希表大小
@@ -11,15 +11,15 @@ class HashTable {
     }
 
     //计算散列密钥的方式
-    myHashFunction(str, n) {
+    myHashFunction(key, n) {
         let sum = 0
-        for (let i = 0; i < str.length; i++) {
-            sum += str.charCodeAt(i) * 3
+        for (let i = 0; i < key.length; i++) {
+            sum += key.charCodeAt(i) * 3
         }
         return sum % n
     }
 
-    //插入键值对
+    //插入key-value 或 key-field-value
     insert(key, value) {
         //先计算得到此key的下标
         const index = this.myHashFunction(key, this.size)
@@ -28,7 +28,7 @@ class HashTable {
         if (this.storage[index] == null) {
             this.storage[index] = []
         }
-        //将新的键值对push进去
+        //将新的key-value对push进去
         this.storage[index].push([key, value])
         //长度加一
         this.length++
@@ -43,14 +43,20 @@ class HashTable {
         let arrayAtIndex = this.storage[index]
         //得到键值对数组的长度
         const length = arrayAtIndex.length
+
+        //判读是否存在key值的记录
         if (length != 0) {
             for (let i = 0; i < length; i++) {
                 const pair = arrayAtIndex[i]
+                //如果找到此key值
                 if (pair[0] == key) {
                     return pair[1]
                 }
             }
+            //如果不存在此key的记录
+            return null
         } else {
+            //如果不存在key的记录
             return null
         }
     }
@@ -64,9 +70,12 @@ class HashTable {
         let arrayAtIndex = this.storage[index]
         //得到键值对数组的长度
         const length = arrayAtIndex.length
+
+        //判断是否有这个存储
         if (length != 0) {
             for (let i = 0; i < length; i++) {
                 const pair = arrayAtIndex[i]
+                //根据传入参数判断是删除key-value还是key-field-value
                 if (pair[0] == key) {
                     delete arrayAtIndex[i]
                     /*
@@ -84,4 +93,4 @@ class HashTable {
     }
 }
 
-module.exports = HashTable
+module.exports = Hash
