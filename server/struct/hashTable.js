@@ -76,7 +76,7 @@ class hashTable {
 
         //得到此下标存放的所有key
         const arrayAtIndex = this.storage[index]
-        const length = arrayAtIndex.length
+        const length = arrayAtIndex ? arrayAtIndex.length : 0
 
         //如果有key的记录
         if (length != 0) {
@@ -93,6 +93,26 @@ class hashTable {
         }
     }
 
+    //得到所有的key
+    keys() {
+        let keys = []
+
+        //遍历哈希表的存储数组
+        for (let i = 0; i < this.size; i++) {
+            let arrayAtIndex = this.storage[i]
+            let length = arrayAtIndex ? arrayAtIndex.length : 0
+
+            if (length != 0) {
+                //遍历此下标的所有键值对
+                for (let j = 0; j < length; j++) {
+                    keys.push(arrayAtIndex[j][0])
+                }
+            }
+        }
+
+        return keys
+    }
+
     //得到某个key的所有field-value对
     fieldSet(key) {
         //先计算得到此key的下标
@@ -100,7 +120,7 @@ class hashTable {
 
         //得到此下标存放的所有key
         const arrayAtIndex = this.storage[index]
-        const length = arrayAtIndex.length
+        const length = arrayAtIndex ? arrayAtIndex.length : 0
 
         //判断是否有key的记录
         if (length != 0) {
@@ -115,6 +135,32 @@ class hashTable {
             return null
         }
     }
+
+    //更新状态
+    update(key, field, newValue) {
+        //先计算得到此key的下标
+        const index = this.myHashFunction(key, this.size)
+
+        //得到此下标存放的所有key
+        const arrayAtIndex = this.storage[index]
+        const length = arrayAtIndex ? arrayAtIndex.length : 0
+
+        //判断此下标有没有存放key
+        if (length != 0) {
+            for (let i = 0; i < length; i++) {
+                let pair = arrayAtIndex[i]
+                if (pair[0] == key) {
+                    //更新这个key的hash
+                    let status = arrayAtIndex[i][1].update(field, newValue)
+                    return status
+                }
+            }
+            return false
+        } else {
+            return false
+        }
+    }
 }
+
 
 module.exports = hashTable

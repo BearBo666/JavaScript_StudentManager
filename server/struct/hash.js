@@ -100,7 +100,7 @@ class Hash {
         if (length != 0) {
             for (let i = 0; i < length; i++) {
                 const pair = arrayAtIndex[i]
-                //根据传入参数判断是删除key-value还是key-field-value
+                //如果等于key值
                 if (pair[0] == key) {
                     delete arrayAtIndex[i]
                     //有此元素并且删除成功返回true
@@ -110,6 +110,34 @@ class Hash {
         } else {
             //没有这个元素则返回null
             return null
+        }
+    }
+
+    //更新某key的value值
+    update(key, newValue) {
+        //获得此key对应的下标
+        const index = this.myHashFunction(key, this.storage)
+
+        //得到此下标存放的所有键值对
+        let arrayAtIndex = this.storage[index]
+        //得到键值对数组的长度
+        const length = arrayAtIndex ? arrayAtIndex.length : 0
+
+        //判断此下标有没有存放key
+        if (length != 0) {
+            for (let i = 0; i < length; i++) {
+                let pair = arrayAtIndex[i]
+                //如果等于key值
+                if (pair[0] == key) {
+                    //更新值
+                    arrayAtIndex[i][1] = newValue
+                    //返回true更新成功
+                    return true
+                }
+            }
+            return false
+        } else {
+            return false
         }
     }
 }

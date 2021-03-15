@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { Login } = require('./modules/student')
+const { Login, Apply, GetAchievementList } = require('./modules/student')
 
 //学生登录
 router.post('/login', (req, res) => {
@@ -13,11 +13,24 @@ router.post('/login', (req, res) => {
 })
 
 //学生申请成果
-router.post('/', (req, res) => {
+router.post('/apply', (req, res) => {
     //结构参数
-    const { account } = req.headers
-    const { achievementId } = req.body
+    const { account, achievementId } = req.body
+    Apply(account, achievementId).then(result => {
+        res.send(result)
+    }).catch(err => {
+        res.send(err)
+    })
+})
 
+//学生查看自己申请的成果
+router.get('/list', (req, res) => {
+    const { account } = req.body
+    GetAchievementList(account).then(result => {
+        res.send(result)
+    }).catch(err => {
+        res.send(err)
+    })
 })
 
 module.exports = router

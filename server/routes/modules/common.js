@@ -31,7 +31,7 @@ function readAchievement() {
     objArray.forEach(array => {
         //将每个对象挂载到全局global
         let obj = serializeAchieve(array)
-
+        global.$Achievement.insert(obj.id, obj)
     })
 }
 
@@ -50,21 +50,23 @@ function readStuAchieve() {
     objArray.forEach(array => {
         //将每个对象挂载到全局global
         let obj = serializeStuAchieve(array)
-
-        console.log(obj)
+        global.$StudentAchieve.insert(obj.stuNum, obj.achieveId, obj)
     })
 }
 
 
 //Achievement数组反序列化为对象
 function serializeAchieve(array) {
+    //从数组中得到数据
     let id = array[0]
     let name = array[1]
 
+    //生成对象
     let obj = new Achievement(id, name)
     obj.level = array[2]
     obj.createdAt = new Date(array[3])
 
+    //给成果对象添加属性
     for (let i = 4; i < array.length; i++) {
         let attr = array[i].split(' ')
         obj.addAttribute(attr[0], attr[1], attr[2] == 'true' ? true : false)
@@ -75,25 +77,61 @@ function serializeAchieve(array) {
 
 //stuAchieve数组反序列化为对象
 function serializeStuAchieve(array) {
+    //从数组中得到数据
     let stuNum = array[0]
     let achieveId = array[1]
     let status = array[2] == "审核通过" ? 1 : array[2] == 2 ? '审核不通过' : '未审核'
 
+    //生成对象
     let obj = new studentAchieve(stuNum, achieveId)
     obj.changeStatus(status)
 
     return obj
 }
 
-//更新学生成果审核状态
-function updateStuAchieve(stuNum, achieveId) {
 
+
+//更新学生成果审核状态
+function updateStuAchieve(stuNum, achieveId, newStatus) {
+    //先得到该学生的成果实例
+    let studentAchieve = global.$StudentAchieve.get(stuNum, achieveId)
+
+    //如果不存在
+    if (!studentAchieve) {
+        return false
+    } else {
+        studentAchieve.changeStatus(newStatus)
+
+        global.$StudentAchieve.update(stuNum, achieveId, studentAchieve)
+
+        //更新文件内容
+        saveStudentAchieve()
+
+        return true
+    }
 }
 
+//将global对象保存的数据存入文件
+function saveStudentAchieve() {
+    //得到所有学号
+    let allStudent = global.$StudentAchieve.keys()
+
+    //遍历每个学生的成果
+    allStudent.forEach(stuNum => {
+        //得到该学生的所有成果
+        let stuAchievement = global.$StudentAchieve.fieldSet(stuNum).getAll()
+
+        //将每一个成果对象存入文件
+        stuAchievement.forEach(achievement => {
+            achievement.save()
+        })
+    })
+}
 
 
 module.exports = {
-    getAchievementList
+    getAchievementList,
+    readAchievement,
+    readStuAchieve,
+    updateStuAchieve,
 }
-
-readStuAchieve()

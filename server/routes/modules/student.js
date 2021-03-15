@@ -76,6 +76,11 @@ function GetAchievementList(account) {
             })
         } else {
             let fieldSet = global.$StudentAchieve.fieldSet(account)
+
+            resolve({
+                status: 200,
+                data: fieldSet ? fieldSet.getAll() : []
+            })
         }
     })
 }
@@ -100,5 +105,6 @@ function checkStuden(account) {
 
 module.exports = {
     Login,
-    Apply
+    Apply,
+    GetAchievementList
 }

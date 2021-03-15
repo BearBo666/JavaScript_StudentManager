@@ -1,5 +1,6 @@
 const { readFileToArr } = require('../../util/File')
 const Achievement = require('../../models/achievement')
+const { updateStuAchieve } = require('./common')
 const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\teacher.txt'
 
 //辅导员登录
@@ -66,13 +67,25 @@ function Desgin(params) {
 }
 
 //辅导员审核学生申请的成果
-function Examine(stuNum, achievementId) {
+function Examine(stuNum, achievementId, newStatus) {
     return new Promise((resolve, reject) => {
-
+        let result = updateStuAchieve(stuNum, achievementId, newStatus)
+        if (result == false) {
+            reject({
+                status: 403,
+                msg: '该生不存在或未申请此成果'
+            })
+        } else {
+            resolve({
+                status: 200,
+                msg: '更新成功'
+            })
+        }
     })
 }
 
 module.exports = {
     Login,
-    Desgin
+    Desgin,
+    Examine
 }
