@@ -18,21 +18,32 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            prefix-icon="iconfont icon-user"
+            prefix-icon="el-icon-user"
           ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
-            prefix-icon="iconfont icon-password"
+            prefix-icon="el-icon-lock"
             type="password"
           ></el-input>
         </el-form-item>
         <!-- 按钮 -->
-        <el-form-item class="btns">
-          <el-button type="primary" @click="login">登录</el-button>
-          <el-button type="info" @click="reseLoginForm">重置</el-button>
+        <el-form-item>
+          <div class="btns">
+            <div>
+              <el-switch
+                v-model="role"
+                active-text="老师"
+                inactive-text="学生"
+              ></el-switch>
+            </div>
+            <div>
+              <el-button type="primary" @click="login">登录</el-button>
+              <el-button type="info" @click="reseLoginForm">重置</el-button>
+            </div>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -40,15 +51,15 @@
 </template>
 
 <script>
-import { Login } from "@/api/admin.js";
 export default {
   data() {
     return {
       // 登录表单的数据绑定
       loginForm: {
-        username: "moyujian",
-        password: "linghang666",
+        username: "liuguangsheng",
+        password: "123456",
       },
+
       // 这是表单验证规则对象
       loginFormRules: {
         // 用户名验证
@@ -56,6 +67,8 @@ export default {
         // 密码验证
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
+
+      role: false,
     };
   },
   methods: {
@@ -65,15 +78,7 @@ export default {
     },
     //登录
     async login() {
-      //执行验证逻辑后跳转
-      const { data } = await Login(this.loginForm);
-      if (data.status == 0) {
-        window.sessionStorage.setItem("token", data.data);
-        this.$message.success("登录成功");
-        this.$router.push("/home");
-      } else {
-        this.$message.error("请检查用户名密码！");
-      }
+      this.$router.push("/teacher");
     },
   },
 };
@@ -119,6 +124,6 @@ export default {
 }
 .btns {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 </style>
