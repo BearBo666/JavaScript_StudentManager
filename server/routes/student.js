@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { Login, Apply, GetAchievementList } = require('./modules/student')
+const { Login, Apply, GetOwnAchieve } = require('./modules/student')
+const { getAchievementList } = require('./modules/common')
 
 //学生登录
 router.post('/login', (req, res) => {
@@ -25,11 +26,20 @@ router.post('/apply', (req, res) => {
 
 //学生查看自己申请的成果
 router.get('/list', (req, res) => {
-    const { account } = req.body
-    GetAchievementList(account).then(result => {
+    const { account } = req.query
+    GetOwnAchieve(account).then(result => {
         res.send(result)
     }).catch(err => {
         res.send(err)
+    })
+})
+
+//学生查看可申请的成果
+router.get('/index', (req, res) => {
+    let result = getAchievementList()
+    res.send({
+        status: 200,
+        data: result
     })
 })
 

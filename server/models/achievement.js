@@ -1,5 +1,5 @@
 const { writeFile } = require('../util/File')
-const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\achievement.txt'
+const { AchievePath } = require('../data/path')
 
 //辅导员设计的成果
 class Achievement {
@@ -25,14 +25,14 @@ class Achievement {
 
     //将成果存入文本
     async save() {
-        await writeFile(pathName, this.id)
-        await writeFile(pathName, this.name)
-        await writeFile(pathName, this.level)
-        await writeFile(pathName, this.createdAt.toLocaleString())
+        await writeFile(AchievePath, this.id)
+        await writeFile(AchievePath, this.name)
+        await writeFile(AchievePath, this.level)
+        await writeFile(AchievePath, this.createdAt)
         for (let i = 0; i < this.attribute.length; i++) {
-            await writeFile(pathName, this.attribute[i].name + ' ' + this.attribute[i].value + ' ' + this.attribute[i].required)
+            await writeFile(AchievePath, this.attribute[i].name + ' ' + this.attribute[i].value + ' ' + this.attribute[i].required)
         }
-        await writeFile(pathName, ' ')
+        await writeFile(AchievePath, ' ')
     }
 }
 

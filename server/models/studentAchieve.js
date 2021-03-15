@@ -1,5 +1,5 @@
 const { writeFile } = require('../util/File')
-const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\stuAchievement.txt'
+const { StudentAchievePath } = require('../data/path')
 
 //学生获得的成果
 class studentAchieve {
@@ -23,13 +23,15 @@ class studentAchieve {
             var statusTxt = '未审核'
         } else if (this.status == 1) {
             var statusTxt = '审核通过'
-        } else {
+        } else if (this.status == 2) {
             var statusTxt = '审核不通过'
+        } else {
+            var statusTxt = '状态错误'
         }
-        await writeFile(pathName, this.stuNum)
-        await writeFile(pathName, this.achieveId)
-        await writeFile(pathName, statusTxt)
-        await writeFile(pathName, ' ')
+        await writeFile(StudentAchievePath, this.stuNum)
+        await writeFile(StudentAchievePath, this.achieveId)
+        await writeFile(StudentAchievePath, statusTxt)
+        await writeFile(StudentAchievePath, ' ')
     }
 }
 

@@ -1,17 +1,18 @@
 const { readFileToArr } = require('../../util/File')
 const Achievement = require('../../models/achievement')
 const { updateStuAchieve } = require('./common')
-const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\teacher.txt'
+const { TeacherPath } = require('../../data/path')
+const qs = require('qs')
 
 //辅导员登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
         //读取文件中的账号密码
-        readFileToArr(pathName, (arr) => {
+        readFileToArr(TeacherPath, (arr) => {
             //遍历文件每一行
             for (let i = 0, length = arr.length; i < length; i++) {
-                let acc = arr.split(' ')[0]
-                let pwd = arr.split(' ')[1]
+                let acc = arr[i].split(' ')[0]
+                let pwd = arr[i].split(' ')[1]
                 if (acc != account) {
                     continue
                 } else {
@@ -36,7 +37,7 @@ function Login(account, password) {
 function Desgin(params) {
     return new Promise((resolve, reject) => {
         //解构出参数
-        const { name, level, attributes } = params
+        const { name, level, attrs } = params
         if (!name || !level) {
             reject({
                 status: 403,
@@ -47,8 +48,11 @@ function Desgin(params) {
             let newAchievement = new Achievement(global.$Achievement.length, name)
 
             //添加属性
-            for (let i = 0; i < attributes.length; i++) {
-                newAchievement.addAttribute(attributes[i].name, attributes[i].value, attributes[i].required)
+            if (attrs) {
+                let attributes = qs.parse(attrs)
+                for (let i = 0; i < attributes.length; i++) {
+                    newAchievement.addAttribute(attributes[i].name, attributes[i].value, attributes[i].required)
+                }
             }
 
             //存入文件
@@ -83,6 +87,10 @@ function Examine(stuNum, achievementId, newStatus) {
         }
     })
 }
+
+//辅导员查看学生申请排名
+
+//辅导员查看成果申请人数排名
 
 module.exports = {
     Login,

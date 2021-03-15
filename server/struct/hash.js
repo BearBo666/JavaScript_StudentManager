@@ -42,7 +42,7 @@ class Hash {
         //得到此下标存放的所有键值对
         let arrayAtIndex = this.storage[index]
         //得到键值对数组的长度
-        const length = arrayAtIndex.length
+        const length = arrayAtIndex ? arrayAtIndex.length : 0
 
         //判读是否存在key值的记录
         if (length != 0) {

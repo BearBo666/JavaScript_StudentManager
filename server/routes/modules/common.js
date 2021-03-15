@@ -1,28 +1,18 @@
-const path = require('path')
-const fs = require('fs')
+const { StudentAchievePath, AchievePath } = require('../../data/path')
 const { SplitArray } = require('../../util/Filter')
 const Achievement = require('../../models/achievement')
 const studentAchieve = require('../../models/studentAchieve')
+const fs = require('fs')
 
 //获取已设计的成果的列表
 function getAchievementList() {
-    return new Promise((resolve, reject) => {
-        let result = global.$Achievement.getAll()
-        resolve({
-            status: 200,
-            msg: '查询成功！',
-            data: result
-        })
-    })
+    return global.$Achievement.getAll()
 }
 
 //从文件中读取辅导员设计的成果
 function readAchievement() {
-    //文本路径
-    let pathName = path.join(__dirname + '/../../data/achievement.txt')
-
     //读取文件内容并以换行符分割
-    let data = fs.readFileSync(pathName, 'utf-8').split('\n')
+    let data = fs.readFileSync(AchievePath, 'utf-8').split('\n')
 
     //每个序列化的对象以' '隔开,得到对象数组
     let objArray = SplitArray(data, ' ')
@@ -37,11 +27,8 @@ function readAchievement() {
 
 //从文件中读取学生的成果
 function readStuAchieve() {
-    //文本路径
-    let pathName = path.join(__dirname + '/../../data/stuAchievement.txt')
-
     //读取文件内容并以换行符分割
-    let data = fs.readFileSync(pathName, 'utf-8').split('\n')
+    let data = fs.readFileSync(StudentAchievePath, 'utf-8').split('\n')
 
     //每个序列化的对象以' '隔开,得到对象数组
     let objArray = SplitArray(data, ' ')
@@ -104,6 +91,9 @@ function updateStuAchieve(stuNum, achieveId, newStatus) {
 
         global.$StudentAchieve.update(stuNum, achieveId, studentAchieve)
 
+        //清空文件
+        fs.writeFileSync(StudentAchievePath, '')
+
         //更新文件内容
         saveStudentAchieve()
 
@@ -117,7 +107,9 @@ function saveStudentAchieve() {
     let allStudent = global.$StudentAchieve.keys()
 
     //遍历每个学生的成果
-    allStudent.forEach(stuNum => {
+    for (let i = 0; i < allStudent.length; i++) {
+        let stuNum = allStudent[i]
+
         //得到该学生的所有成果
         let stuAchievement = global.$StudentAchieve.fieldSet(stuNum).getAll()
 
@@ -125,7 +117,7 @@ function saveStudentAchieve() {
         stuAchievement.forEach(achievement => {
             achievement.save()
         })
-    })
+    }
 }
 
 

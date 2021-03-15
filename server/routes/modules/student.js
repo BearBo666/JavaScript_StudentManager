@@ -1,16 +1,16 @@
 const studentAchieve = require('../../models/studentAchieve')
 const { readFileToArr } = require('../../util/File')
-const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\student.txt'
+const { StudentPath } = require('../../data/path')
 
 //学生登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
         //读取文件中的账号密码
-        readLine('../../data/student.txt', (arr) => {
+        readFileToArr(StudentPath, (arr) => {
             //遍历文件每一行
             for (let i = 0, length = arr.length; i < length; i++) {
-                let acc = arr.split(' ')[0]
-                let pwd = arr.split(' ')[1]
+                let acc = arr[i].split(' ')[0]
+                let pwd = arr[i].split(' ')[1]
                 if (acc != account) {
                     continue
                 } else {
@@ -67,7 +67,7 @@ function Apply(account, achievementId) {
 }
 
 //学生查看自己的成果
-function GetAchievementList(account) {
+function GetOwnAchieve(account) {
     return new Promise(async (resolve, reject) => {
         if (!await checkStuden(account)) {
             reject({
@@ -88,7 +88,7 @@ function GetAchievementList(account) {
 //检查是否文件中是否存在此学生
 function checkStuden(account) {
     return new Promise((resolve, reject) => {
-        readFileToArr(pathName, (arr) => {
+        readFileToArr(StudentPath, (arr) => {
             //遍历文件每一行
             for (let i = 0, length = arr.length; i < length; i++) {
                 let acc = arr[i].split(' ')[0]
@@ -106,5 +106,5 @@ function checkStuden(account) {
 module.exports = {
     Login,
     Apply,
-    GetAchievementList
+    GetOwnAchieve
 }

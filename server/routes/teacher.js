@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const qs = require('qs')
 const { Login, Desgin, Examine } = require('./modules/teacher')
 
 //辅导员登录
@@ -18,9 +17,7 @@ router.post('/login', (req, res) => {
 router.post('/desgin', (req, res) => {
     //解构出参数
     const { name, level, attrs } = req.body
-    //属性序列化
-    const { attributes } = qs.parse(attrs)
-    Desgin({ attributes, name, level }).then(result => {
+    Desgin({ attrs, name, level }).then(result => {
         res.send(result)
     }).catch(err => {
         res.send(err)

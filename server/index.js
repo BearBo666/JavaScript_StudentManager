@@ -1,15 +1,26 @@
-// const X = require('./models/achievement')
+// let obj0 = {
+//     x: 0
+// }
+// let obj1 = {
+//     x: 1
+// }
+// let obj2 = {
+//     x: 2
+// }
+// let obj3 = {
+//     x: 3
+// }
+// let obj4 = {
+//     x: 4
+// }
+// let obj5 = {
+//     x: 5
+// }
 
-// let a = new X(1, '测试')
+// const { Sort } = require('./util/Sort')
 
-// a.addAttribute('属性1', '值1', false)
-// a.addAttribute('属性1', '值1', false)
-// a.addAttribute('属性1', '值1', false)
+// let arr = [obj2, obj4, obj1, obj5, obj0, obj3]
 
-// a.save()
+// arr = Sort(arr, 'x')
 
-
-const Y = require('./models/studentAchieve')
-
-let b = new Y(201913137151, 1)
-b.save()
+// console.log(arr)
