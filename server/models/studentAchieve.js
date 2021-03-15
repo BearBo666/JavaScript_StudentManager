@@ -26,9 +26,9 @@ class studentAchieve {
         } else {
             var statusTxt = '审核不通过'
         }
-        await writeFile(pathName, '学号:' + this.stuNum)
-        await writeFile(pathName, '成果id:' + this.achieveId)
-        await writeFile(pathName, '审核状态:' + statusTxt)
+        await writeFile(pathName, this.stuNum)
+        await writeFile(pathName, this.achieveId)
+        await writeFile(pathName, statusTxt)
         await writeFile(pathName, ' ')
     }
 }

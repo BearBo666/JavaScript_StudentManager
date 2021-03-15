@@ -25,11 +25,10 @@ class Achievement {
 
     //将成果存入文本
     async save() {
-        await writeFile(pathName, 'id:' + this.id)
-        await writeFile(pathName, '成果名称:' + this.name)
-        await writeFile(pathName, '级别:' + this.level)
-        await writeFile(pathName, '录入时间:' + this.createdAt.toLocaleString())
-        await writeFile(pathName, '属性:')
+        await writeFile(pathName, this.id)
+        await writeFile(pathName, this.name)
+        await writeFile(pathName, this.level)
+        await writeFile(pathName, this.createdAt.toLocaleString())
         for (let i = 0; i < this.attribute.length; i++) {
             await writeFile(pathName, this.attribute[i].name + ' ' + this.attribute[i].value + ' ' + this.attribute[i].required)
         }

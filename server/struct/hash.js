@@ -61,6 +61,31 @@ class Hash {
         }
     }
 
+    //得到所有的value
+    getAll() {
+        let values = []
+
+        //遍历storage存储
+        for (let i = 0; i < this.size; i++) {
+            //得到此下标的数组和长度
+            const arrayAtIndex = this.storage[i]
+            const length = arrayAtIndex ? arrayAtIndex.length : 0
+
+            //判断此下标有没有记录key
+            if (length == 0) {
+                continue
+            } else {
+                //遍历此下标内所有的键值对
+                for (let j = 0; j < length; j++) {
+                    values.push(arrayAtIndex[j][1])
+                }
+            }
+        }
+
+        return values
+    }
+
+
     //删除某键值对
     remove(key) {
         //获得此key对应的下标
@@ -78,11 +103,7 @@ class Hash {
                 //根据传入参数判断是删除key-value还是key-field-value
                 if (pair[0] == key) {
                     delete arrayAtIndex[i]
-                    /*
-                    有此元素并且删除成功则长度减一
-                    并返回true
-                    */
-                    this.length--
+                    //有此元素并且删除成功返回true
                     return true
                 }
             }
@@ -92,5 +113,6 @@ class Hash {
         }
     }
 }
+
 
 module.exports = Hash

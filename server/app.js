@@ -4,12 +4,13 @@ const bodyParser = require('body-parser')
 
 //引入数据解构
 const Hash = require('./struct/hash')
+const HashTable = require('./struct/hashTable')
 
 var app = express()
 
 //全局对象
 global.$Achievement = new Hash(100)
-global.$StudentAchieve = new Hash(100)
+global.$StudentAchieve = new HashTable(100)
 
 //解决跨域访问
 app.use(cors())

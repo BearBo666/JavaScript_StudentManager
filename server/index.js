@@ -1,39 +1,15 @@
-// const { writeFile } = require('./util/File')
+// const X = require('./models/achievement')
 
-// const A = require('./models/achievement')
-// const B = require('./models/attribute')
+// let a = new X(1, '测试')
 
-// const x = new A(1, '测试')
-// //const b=new B()
-// x.addAttribute('k1', "value", false)
-// x.addAttribute('k2', "value", false)
-// x.addAttribute('k3', "value", false)
+// a.addAttribute('属性1', '值1', false)
+// a.addAttribute('属性1', '值1', false)
+// a.addAttribute('属性1', '值1', false)
 
-// x.save()
-
-// const qs = require('qs')
+// a.save()
 
 
-// let attributes = []
-// let x1 = { name: 'k1', value: 'v1', required: false }
-// let x2 = { name: 'k2', value: 'v2', required: false }
+const Y = require('./models/studentAchieve')
 
-
-// attributes.push(x1)
-// attributes.push(x2)
-
-// let y = qs.stringify({ attributes })
-// let z = qs.parse(y)
-
-// console.log(y)
-
-// console.log(Boolean(z.attrs[0].required) == false)
-
-// const hashTable = require('./struct/hashTable')
-
-// let x = new hashTable(20)
-
-// x.insert(201913137151, 1, 2)
-
-// let y = x.get(201913137151, 2)
-// console.log(y)
+let b = new Y(201913137151, 1)
+b.save()

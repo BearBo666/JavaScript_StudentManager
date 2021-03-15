@@ -1,11 +1,12 @@
-const readLine = require('../../util/File')
+const { readFileToArr } = require('../../util/File')
 const Achievement = require('../../models/achievement')
+const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\teacher.txt'
 
 //辅导员登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
         //读取文件中的账号密码
-        readLine('../../data/teacher.txt', (arr) => {
+        readFileToArr(pathName, (arr) => {
             //遍历文件每一行
             for (let i = 0, length = arr.length; i < length; i++) {
                 let acc = arr.split(' ')[0]

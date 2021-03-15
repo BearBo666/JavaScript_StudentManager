@@ -86,8 +86,32 @@ class hashTable {
                     return pair[1].get(field)
                 }
             }
+            return null
         } else {
             //没有记录key则返回null
+            return null
+        }
+    }
+
+    //得到某个key的所有field-value对
+    fieldSet(key) {
+        //先计算得到此key的下标
+        const index = this.myHashFunction(key, this.size)
+
+        //得到此下标存放的所有key
+        const arrayAtIndex = this.storage[index]
+        const length = arrayAtIndex.length
+
+        //判断是否有key的记录
+        if (length != 0) {
+            for (let i = 0; i < length; i++) {
+                const pair = arrayAtIndex[i]
+                if (pair[0] == key) {
+                    return pair[1]
+                }
+            }
+            return null
+        } else {
             return null
         }
     }

@@ -1,4 +1,7 @@
 const studentAchieve = require('../../models/studentAchieve')
+const { readFileToArr } = require('../../util/File')
+const pathName = 'C:/\Users/\PengYuYan/\Desktop/\学生成果管理系统/\server/\data/\student.txt'
+
 //学生登录
 function Login(account, password) {
     return new Promise((resolve, reject) => {
@@ -72,7 +75,7 @@ function GetAchievementList(account) {
                 msg: '无此学号'
             })
         } else {
-            
+            let fieldSet = global.$StudentAchieve.fieldSet(account)
         }
     })
 }
@@ -80,10 +83,10 @@ function GetAchievementList(account) {
 //检查是否文件中是否存在此学生
 function checkStuden(account) {
     return new Promise((resolve, reject) => {
-        readLine('../../data/student.txt', (arr) => {
+        readFileToArr(pathName, (arr) => {
             //遍历文件每一行
             for (let i = 0, length = arr.length; i < length; i++) {
-                let acc = arr.split(' ')[0]
+                let acc = arr[i].split(' ')[0]
                 if (acc != account) {
                     continue
                 } else {
@@ -96,5 +99,6 @@ function checkStuden(account) {
 }
 
 module.exports = {
-    Login
+    Login,
+    Apply
 }
