@@ -13,7 +13,8 @@ class Hash {
     //计算散列密钥的方式
     myHashFunction(key, n) {
         let sum = 0
-        for (let i = 0; i < key.length; i++) {
+        let length = key ? key.length : 0
+        for (let i = 0; i < length; i++) {
             sum += key.charCodeAt(i) * 3
         }
         return sum % n

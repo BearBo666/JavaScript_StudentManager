@@ -1,4 +1,5 @@
 const { readFileToArr } = require('../../util/File')
+const { Sort } = require('../../util/Sort')
 const Achievement = require('../../models/achievement')
 const { updateStuAchieve } = require('./common')
 const { TeacherPath } = require('../../data/path')
@@ -37,7 +38,7 @@ function Login(account, password) {
 function Desgin(params) {
     return new Promise((resolve, reject) => {
         //解构出参数
-        const { name, level, attrs } = params
+        const { name, level, attrs, studentAttr } = params
         if (!name || !level) {
             reject({
                 status: 403,
@@ -51,7 +52,15 @@ function Desgin(params) {
             if (attrs) {
                 let attributes = qs.parse(attrs)
                 for (let i = 0; i < attributes.length; i++) {
-                    newAchievement.addAttribute(attributes[i].name, attributes[i].value, attributes[i].required)
+                    newAchievement.addAttribute(attributes[i].name, attributes[i].value)
+                }
+            }
+
+            //添加学生属性
+            if (studentAttr) {
+                let stuAttribute = qs.parse(studentAttr)
+                for (let i = 0; i < stuAttribute.length; i++) {
+                    newAchievement.addStudentAttr(stuAttribute[i].name, stuAttribute[i].required)
                 }
             }
 
@@ -89,11 +98,41 @@ function Examine(stuNum, achievementId, newStatus) {
 }
 
 //辅导员查看学生申请排名
+function GetAllStudent() {
+    return new Promise((resolve, reject) => {
+        let result = []
+        //得到所有学生学号
+        let stuNumArray = global.$StudentAchieve.keys()
+
+        //计算每个学号申请的成果个数
+        for (let i = 0; i < stuNumArray.length; i++) {
+            let stuNum = stuNumArray[i]
+            let fieldSet = global.$StudentAchieve.fieldSet()
+            if (fieldSet == null) {
+                var achievementNum = 0
+            } else {
+                var achievementNum = fieldSet.getAll().length
+            }
+            result.push({
+                stuNum: stuNum,
+                achievementNum: achievementNum
+            })
+        }
+
+        result = Sort(result, 'achievementNum', -1)
+
+        resolve({
+            status: 200,
+            data: result
+        })
+    })
+}
 
 //辅导员查看成果申请人数排名
 
 module.exports = {
     Login,
     Desgin,
-    Examine
+    Examine,
+    GetAllStudent
 }

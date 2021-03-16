@@ -114,9 +114,9 @@ function saveStudentAchieve() {
         let stuAchievement = global.$StudentAchieve.fieldSet(stuNum).getAll()
 
         //将每一个成果对象存入文件
-        stuAchievement.forEach(achievement => {
-            achievement.save()
-        })
+        for (let j = 0; j < stuAchievement.length; j++) {
+            stuAchievement[j].save()
+        }
     }
 }
 

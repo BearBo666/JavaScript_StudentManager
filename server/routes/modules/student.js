@@ -32,7 +32,7 @@ function Login(account, password) {
 }
 
 //学生申请成果
-function Apply(account, achievementId) {
+function Apply(account, achievementId, attribute) {
     return new Promise(async (resolve, reject) => {
         //检查是否存在此学号
         if (!await checkStuden(account)) {
@@ -41,26 +41,57 @@ function Apply(account, achievementId) {
                 msg: '无此学号！'
             })
         } else {
+            //得到对应的成果对象
+            const achievement = global.$Achievement.get(achievementId)
             //检查是否存在
-            if (!global.$Achievement.get(achievementId)) {
+            if (!achievement) {
                 reject({
                     status: 401,
                     msg: '无此成果！'
                 })
             } else {
-                //实例化一个学生成果对象
-                const newStuAchieve = new studentAchieve(account, achievementId)
+                //检查该生是否申请过该成果
+                let check = global.$StudentAchieve.get(account, achievementId)
+                //如果没申请过
+                if (!check) {
+                    //实例化一个学生成果对象
+                    const newStuAchieve = new studentAchieve(account, achievementId)
 
-                //存入全局对象
-                global.$StudentAchieve.insert(account, achievementId, newStuAchieve)
+                    //获得学生要填的信息
+                    const keys = Object.keys(achievement.studentAttr)
+                    //获得学生提交的信息
+                    const attr = qs.parse(attribute)
 
-                //存入文件
-                newStuAchieve.save()
+                    //检查信息是否提交全
+                    for (let i = 0; i < keys.length; i++) {
+                        //如果此属性必填并且前端没传
+                        if (achievement.studentAchieve[i] && !attr[keys[i]]) {
+                            reject({
+                                status: 403,
+                                msg: '参数不全！'
+                            })
+                        }
+                        //添加属性
+                        newStuAchieve.addStudentAttr(keys[i], attr[keys[i]])
+                    }
 
-                resolve({
-                    status: 200,
-                    msg: '录入成功,请等待审核！'
-                })
+                    //存入全局对象
+                    global.$StudentAchieve.insert(account, achievementId, newStuAchieve)
+
+                    //存入文件
+                    newStuAchieve.save()
+
+                    resolve({
+                        status: 200,
+                        msg: '录入成功,请等待审核！'
+                    })
+                } else {
+                    //如果申请过
+                    resolve({
+                        status: 201,
+                        msg: '请勿重复申请'
+                    })
+                }
             }
         }
     })

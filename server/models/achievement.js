@@ -11,6 +11,8 @@ class Achievement {
         this.name = name
         //成果包含的属性
         this.attribute = []
+        //要求学生填写的属性
+        this.studentAttr = {}
         //成果级别,0未确定,1国家级,2省级..
         this.level = 0
         //录入时间
@@ -18,21 +20,31 @@ class Achievement {
     }
 
     //添加属性
-    addAttribute(name, value, required) {
+    addAttribute(name, value) {
         //压入数组
-        this.attribute.push({ name: name, value: value, required: required })
+        this.attribute.push({ name: name, value: value })
+    }
+
+    //添加学生属性
+    addStudentAttr(name, required) {
+        this.studentAttr[name] = required
+    }
+
+    //获得学生属性
+    getStudentAttr() {
+        return this.studentAttr
     }
 
     //将成果存入文本
-    async save() {
-        await writeFile(AchievePath, this.id)
-        await writeFile(AchievePath, this.name)
-        await writeFile(AchievePath, this.level)
-        await writeFile(AchievePath, this.createdAt)
+    save() {
+        writeFile(AchievePath, this.id)
+        writeFile(AchievePath, this.name)
+        writeFile(AchievePath, this.level)
+        writeFile(AchievePath, this.createdAt)
         for (let i = 0; i < this.attribute.length; i++) {
-            await writeFile(AchievePath, this.attribute[i].name + ' ' + this.attribute[i].value + ' ' + this.attribute[i].required)
+            writeFile(AchievePath, this.attribute[i].name + ' ' + this.attribute[i].value)
         }
-        await writeFile(AchievePath, ' ')
+        writeFile(AchievePath, ' ')
     }
 }
 

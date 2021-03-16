@@ -26,14 +26,7 @@ function readFileToArr(filePath, callback) {
 
 //按行写入文件
 function writeFile(filePath, data) {
-    return new Promise((resolve, reject) => {
-        fs.appendFile(filePath, data + '\n', (err => {
-            if (err) {
-                console.log('写入文件发生错误')
-            }
-            resolve()
-        }))
-    })
+    fs.appendFileSync(filePath, data + '\n')
 }
 
 module.exports = {
