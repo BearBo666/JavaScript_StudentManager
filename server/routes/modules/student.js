@@ -1,6 +1,7 @@
 const studentAchieve = require('../../models/studentAchieve')
 const { readFileToArr } = require('../../util/File')
 const { StudentPath } = require('../../data/path')
+const qs = require('qs')
 
 //学生登录
 function Login(account, password) {
@@ -65,7 +66,7 @@ function Apply(account, achievementId, attribute) {
                     //检查信息是否提交全
                     for (let i = 0; i < keys.length; i++) {
                         //如果此属性必填并且前端没传
-                        if (achievement.studentAchieve[i] && !attr[keys[i]]) {
+                        if (achievement.studentAttr[i] && !attr[keys[i]]) {
                             reject({
                                 status: 403,
                                 msg: '参数不全！'
@@ -108,6 +109,7 @@ function GetOwnAchieve(account) {
         } else {
             let fieldSet = global.$StudentAchieve.fieldSet(account)
 
+            console.log(fieldSet.getAll())
             resolve({
                 status: 200,
                 data: fieldSet ? fieldSet.getAll() : []

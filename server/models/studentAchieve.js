@@ -28,13 +28,13 @@ class studentAchieve {
     save() {
         var statusTxt = ''
         switch (this.status) {
-            case 0:
+            case '0':
                 statusTxt = '未审核';
                 break;
-            case 1:
+            case '1':
                 statusTxt = '审核通过';
                 break;
-            case 2:
+            case '2':
                 statusTxt = '审核不通过';
                 break;
             default:
@@ -45,6 +45,7 @@ class studentAchieve {
         for (let i = 0; i < this.studentAttr.length; i++) {
             text += this.studentAttr[i].name + ' ' + this.studentAttr[i].value + '\n'
         }
+        text += ' '
         writeFile(StudentAchievePath, text)
     }
 }

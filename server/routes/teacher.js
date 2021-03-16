@@ -16,8 +16,8 @@ router.post('/login', (req, res) => {
 //辅导员设计成果
 router.post('/desgin', (req, res) => {
     //解构出参数
-    const { name, level, attrs } = req.body
-    Desgin({ attrs, name, level }).then(result => {
+    const { name, level, attrs, studentAttr } = req.body
+    Desgin({ attrs, name, level, studentAttr }).then(result => {
         res.send(result)
     }).catch(err => {
         res.send(err)

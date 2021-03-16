@@ -51,7 +51,7 @@ function Desgin(params) {
             //添加属性
             if (attrs) {
                 let attributes = qs.parse(attrs)
-                for (let i = 0; i < attributes.length; i++) {
+                for (let i = 0; i < Object.keys(attributes).length; i++) {
                     newAchievement.addAttribute(attributes[i].name, attributes[i].value)
                 }
             }
@@ -59,7 +59,9 @@ function Desgin(params) {
             //添加学生属性
             if (studentAttr) {
                 let stuAttribute = qs.parse(studentAttr)
-                for (let i = 0; i < stuAttribute.length; i++) {
+                console.log(stuAttribute)
+                for (let i = 0; i < Object.keys(stuAttribute).length; i++) {
+                    console.log(stuAttribute[i].name)
                     newAchievement.addStudentAttr(stuAttribute[i].name, stuAttribute[i].required)
                 }
             }

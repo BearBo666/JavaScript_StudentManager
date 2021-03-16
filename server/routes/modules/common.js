@@ -13,10 +13,9 @@ function getAchievementList() {
 function readAchievement() {
     //读取文件内容并以换行符分割
     let data = fs.readFileSync(AchievePath, 'utf-8').split('\n')
-
+    data.splice(data.length - 1, 1)
     //每个序列化的对象以' '隔开,得到对象数组
     let objArray = SplitArray(data, ' ')
-
     //序列化对象数组
     objArray.forEach(array => {
         //将每个对象挂载到全局global
@@ -53,10 +52,20 @@ function serializeAchieve(array) {
     obj.level = array[2]
     obj.createdAt = new Date(array[3])
 
-    //给成果对象添加属性
+    //给成果对象添加属性    
+    let flag = array.length;
     for (let i = 4; i < array.length; i++) {
         let attr = array[i].split(' ')
-        obj.addAttribute(attr[0], attr[1], attr[2] == 'true' ? true : false)
+        if (attr == "待学生录入：") {
+            flag = i + 1
+            break;
+        }
+        obj.addAttribute(attr[0], attr[1])
+    }
+    //给成果对象添加待学生录入的属性
+    for (let i = flag; i < array.length; i++) {
+        let attr = array[i].split(' ')
+        obj.addStudentAttr(attr[0], attr[1] == "true" ? true : false)
     }
 
     return obj
@@ -72,6 +81,12 @@ function serializeStuAchieve(array) {
     //生成对象
     let obj = new studentAchieve(stuNum, achieveId)
     obj.changeStatus(status)
+
+    //录入属性
+    for (let i = 3; i < array.length; i++) {
+        let attr = array[i].split(' ')
+        obj.addStudentAttr(attr[0], attr[1])
+    }
 
     return obj
 }
@@ -101,7 +116,7 @@ function updateStuAchieve(stuNum, achieveId, newStatus) {
     }
 }
 
-//将global对象保存的数据存入文件
+//将global对象保存的学生成果存入文件
 function saveStudentAchieve() {
     //得到所有学号
     let allStudent = global.$StudentAchieve.keys()
@@ -112,7 +127,6 @@ function saveStudentAchieve() {
 
         //得到该学生的所有成果
         let stuAchievement = global.$StudentAchieve.fieldSet(stuNum).getAll()
-
         //将每一个成果对象存入文件
         for (let j = 0; j < stuAchievement.length; j++) {
             stuAchievement[j].save()

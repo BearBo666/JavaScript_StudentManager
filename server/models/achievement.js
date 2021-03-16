@@ -37,14 +37,19 @@ class Achievement {
 
     //将成果存入文本
     save() {
-        writeFile(AchievePath, this.id)
-        writeFile(AchievePath, this.name)
-        writeFile(AchievePath, this.level)
-        writeFile(AchievePath, this.createdAt)
+        let text = this.id + '\n' + this.name + '\n' + this.level + '\n' + this.createdAt + '\n'
+        //录入属性
         for (let i = 0; i < this.attribute.length; i++) {
-            writeFile(AchievePath, this.attribute[i].name + ' ' + this.attribute[i].value)
+            text += this.attribute[i].name + ' ' + this.attribute[i].value + '\n'
         }
-        writeFile(AchievePath, ' ')
+        text += '待学生录入：\n'
+        //录入学生属性
+        const keys = Object.keys(this.studentAttr)
+        for (let i = 0; i < keys.length; i++) {
+            text += keys[i] + ' ' + this.studentAttr[keys[i]] + '\n'
+        }
+        text += ' '
+        writeFile(AchievePath, text)
     }
 }
 
