@@ -28,7 +28,6 @@
 
         <!-- 菜单 -->
         <el-menu
-          unique-opened
           :default-active="activePath"
           background-color="#304156"
           text-color="#FFFFFF"
@@ -36,13 +35,23 @@
           :collapse="isCollapse"
           :collapse-transition="false"
         >
-          <!-- 报名者菜单 -->
-          <el-submenu index="comer">
+          <!-- 成果菜单 -->
+          <el-submenu index="achievement">
             <template slot="title">
-              <i class="el-icon-user font-mid white"></i>
-              <span class="white" style="font-size:16px">报名者</span>
+              <i class="el-icon-trophy font-mid white"></i>
+              <span class="white" style="font-size:16px">成果管理</span>
             </template>
-            <el-menu-item index="/comer">列表</el-menu-item>
+            <el-menu-item index="/desgin">设计成果</el-menu-item>
+            <el-menu-item index="/examine">审核成果</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="rank">
+            <template slot="title">
+              <i class="el-icon-medal-1 font-mid white"></i>
+              <span class="white" style="font-size:16px">排名查看</span>
+            </template>
+            <el-menu-item index="/stuRank">学生排名</el-menu-item>
+            <el-menu-item index="/rank">成果排名</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>

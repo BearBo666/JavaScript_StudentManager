@@ -17,7 +17,7 @@
         <!-- 折叠选项 -->
         <div class="toggle">
           <strong style="font-size:18px;margin-left:20px " class="white"
-            >选项</strong
+            >菜单</strong
           >
           <i
             :class="isCollapse ? 'el-icon-arrow-down' : 'el-icon-arrow-left'"
@@ -37,12 +37,13 @@
           :collapse-transition="false"
         >
           <!-- 报名者菜单 -->
-          <el-submenu index="comer">
+          <el-submenu index="/comer">
             <template slot="title">
               <i class="el-icon-user font-mid white"></i>
-              <span class="white" style="font-size:16px">报名者</span>
+              <span class="white" style="font-size:16px">成果管理</span>
             </template>
-            <el-menu-item index="/comer">列表</el-menu-item>
+            <el-menu-item index="/mine">我的成果</el-menu-item>
+            <el-menu-item index="/apply">申请成果</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>

@@ -10,14 +10,13 @@
       <el-form
         ref="loginFormRef"
         :model="loginForm"
-        :rules="loginFormRules"
         label-width="0px"
         class="login_form"
       >
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input
-            v-model="loginForm.username"
+            v-model="loginForm.account"
             prefix-icon="el-icon-user"
           ></el-input>
         </el-form-item>
@@ -56,18 +55,10 @@ export default {
     return {
       // 登录表单的数据绑定
       loginForm: {
-        username: "liuguangsheng",
+        account: "liuguangsheng",
         password: "123456",
       },
-
-      // 这是表单验证规则对象
-      loginFormRules: {
-        // 用户名验证
-        username: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        // 密码验证
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-      },
-
+      //平台使用人身份,true老师,false学生
       role: false,
     };
   },
@@ -78,7 +69,11 @@ export default {
     },
     //登录
     async login() {
-      this.$router.push("/teacher");
+      if (this.role) {
+        this.$router.push("/teacher");
+      } else {
+        this.$router.push("/student");
+      }
     },
   },
 };
