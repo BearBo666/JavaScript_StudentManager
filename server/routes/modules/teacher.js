@@ -2,7 +2,7 @@ const { readFileToArr } = require('../../util/File')
 const { Sort } = require('../../util/Sort')
 const Achievement = require('../../models/achievement')
 const { updateStuAchieve } = require('./common')
-const { TeacherPath } = require('../../data/path')
+const { TeacherPath, StudentPath } = require('../../data/path')
 const qs = require('qs')
 
 //辅导员登录
@@ -46,7 +46,7 @@ function Desgin(params) {
             })
         } else {
             //新的成果
-            let newAchievement = new Achievement(global.$Achievement.length, name)
+            let newAchievement = new Achievement(global.$Achievement.length, name, level)
 
             //添加属性
             if (attrs) {
@@ -79,6 +79,36 @@ function Desgin(params) {
     })
 }
 
+//辅导员获得所有待审核的学生成果
+function GetUnexamined() {
+    return new Promise(async (resolve, reject) => {
+        let result = []
+        //先得到所有学生
+        let allStudent = global.$StudentAchieve.keys()
+        //遍历每个学生的成果
+        for (let i = 0; i < allStudent.length; i++) {
+            let allAchievement = global.$StudentAchieve.fieldSet(allStudent[i])
+            if (!allAchievement) {
+                continue
+            } else {
+                let achievement = allAchievement.getAll()
+                for (j = 0; j < achievement.length; j++) {
+                    if (achievement[j].status == '0') {
+                        achievement[j].achieveName = global.$Achievement.get(achievement[j].achieveId).name
+                        achievement[j].name = await getNameByNum(achievement[j].stuNum)
+                        result.push(achievement[j])
+                    }
+                }
+            }
+        }
+
+        resolve({
+            status: 200,
+            data: result
+        })
+    })
+}
+
 //辅导员审核学生申请的成果
 function Examine(stuNum, achievementId, newStatus) {
     return new Promise((resolve, reject) => {
@@ -99,7 +129,7 @@ function Examine(stuNum, achievementId, newStatus) {
 
 //辅导员查看学生申请排名
 function GetStudentRank() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let result = []
         //得到所有学生学号
         let stuNumArray = global.$StudentAchieve.keys()
@@ -108,6 +138,8 @@ function GetStudentRank() {
         for (let i = 0; i < stuNumArray.length; i++) {
             //学号
             let stuNum = stuNumArray[i]
+            //姓名
+            let stuName = await getNameByNum(stuNum)
             //该学号的所有申请成果
             let fieldSet = global.$StudentAchieve.fieldSet(stuNum)
             if (fieldSet == null) {
@@ -117,6 +149,7 @@ function GetStudentRank() {
             }
             result.push({
                 stuNum: stuNum,
+                stuName: stuName,
                 achievementNum: achievementNum
             })
         }
@@ -166,10 +199,29 @@ function GetAchieveRank() {
     })
 }
 
+//根据学号获得姓名
+function getNameByNum(stuNum) {
+    return new Promise((resolve, reject) => {
+        readFileToArr(StudentPath, arr => {
+            //遍历文件每一行
+            for (let i = 0, length = arr.length; i < length; i++) {
+                let acc = arr[i].split(' ')[0]
+                if (acc != stuNum) {
+                    continue
+                } else {
+                    resolve(arr[i].split(' ')[2])
+                }
+            }
+            resolve(false)
+        })
+    })
+}
+
 module.exports = {
     Login,
     Desgin,
     Examine,
+    GetUnexamined,
     GetStudentRank,
     GetAchieveRank
 }

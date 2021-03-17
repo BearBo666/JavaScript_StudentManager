@@ -66,7 +66,7 @@ function Apply(account, achievementId, attribute) {
                     //检查信息是否提交全
                     for (let i = 0; i < keys.length; i++) {
                         //如果此属性必填并且前端没传
-                        if (achievement.studentAttr[i] && !attr[keys[i]]) {
+                        if (achievement.studentAttr[keys[i]] && !attr[keys[i]]) {
                             reject({
                                 status: 403,
                                 msg: '参数不全！'
@@ -109,9 +109,18 @@ function GetOwnAchieve(account) {
         } else {
             let fieldSet = global.$StudentAchieve.fieldSet(account)
 
+            let result = []
+            if (fieldSet) {
+                result = fieldSet.getAll()
+                for (let i = 0; i < result.length; i++) {
+                    let achieveName = global.$Achievement.get(result[i].achieveId).name
+                    result[i].achieveName = achieveName
+                }
+            }
+
             resolve({
                 status: 200,
-                data: fieldSet ? fieldSet.getAll() : []
+                data: result
             })
         }
     })

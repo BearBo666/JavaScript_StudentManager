@@ -76,12 +76,20 @@ function serializeStuAchieve(array) {
     //从数组中得到数据
     let stuNum = array[0]
     let achieveId = array[1]
-    let status = array[2] == "审核通过" ? 1 : array[2] == 2 ? '审核不通过' : '未审核'
+
+    if (array[2] == '未审核') {
+        var status = 0
+    } else if (array[2] == '审核通过') {
+        var status = 1
+    } else if (array[2] == '审核不通过') {
+        var status = 2
+    } else {
+        var status = 0
+    }
 
     //生成对象
     let obj = new studentAchieve(stuNum, achieveId)
     obj.changeStatus(status)
-
     //录入属性
     for (let i = 3; i < array.length; i++) {
         let attr = array[i].split(' ')

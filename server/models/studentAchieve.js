@@ -27,20 +27,17 @@ class studentAchieve {
     //存入文件
     save() {
         var statusTxt = ''
-        switch (this.status) {
-            case '0':
-                statusTxt = '未审核';
-                break;
-            case '1':
-                statusTxt = '审核通过';
-                break;
-            case '2':
-                statusTxt = '审核不通过';
-                break;
-            default:
-                statusTxt = '状态出错';
-                break;
+        if (this.status == 0) {
+            statusTxt = '未审核'
+        } else if (this.status == 1) {
+            statusTxt = '审核通过'
+        } else if (this.status == 2) {
+            statusTxt = '审核不通过'
+        } else {
+            statusTxt = '状态出错'
         }
+        console.log(this.status == '0')
+        console.log(this.status + statusTxt)
         var text = this.stuNum + '\n' + this.achieveId + '\n' + statusTxt + '\n'
         for (let i = 0; i < this.studentAttr.length; i++) {
             text += this.studentAttr[i].name + ' ' + this.studentAttr[i].value + '\n'

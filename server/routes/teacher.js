@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { Login, Desgin, Examine, GetStudentRank, GetAchieveRank } = require('./modules/teacher')
+const { Login, Desgin, Examine, GetUnexamined, GetStudentRank, GetAchieveRank } = require('./modules/teacher')
 
 //辅导员登录
 router.post('/login', (req, res) => {
-    //解构出参数
     const { account, password } = req.body
     Login(account, password).then(result => {
         res.send(result)
@@ -15,9 +14,17 @@ router.post('/login', (req, res) => {
 
 //辅导员设计成果
 router.post('/desgin', (req, res) => {
-    //解构出参数
     const { name, level, attrs, studentAttr } = req.body
     Desgin({ attrs, name, level, studentAttr }).then(result => {
+        res.send(result)
+    }).catch(err => {
+        res.send(err)
+    })
+})
+
+//辅导员获得未审核的学生成果申请
+router.get('/list', (req, res) => {
+    GetUnexamined().then(result => {
         res.send(result)
     }).catch(err => {
         res.send(err)

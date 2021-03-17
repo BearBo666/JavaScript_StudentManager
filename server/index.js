@@ -1,24 +1,20 @@
-const qs = require('qs')
-
-let x = [
-    { name: '举办地', value: '武科大' },
-    { name: '学分', value: '2个' }
+let todo = [
+    { id: 1, name: 'x', done: true },
+    { id: 2, name: 'y', done: true },
+    { id: 3, name: 'z', done: true },
 ]
 
-let y = [
-    { name: '队长', required: true },
-    { name: '队伍人数', required: true },
-    { name: '选题', required: true },
-]
+let newTodos = []
 
-console.log(qs.stringify(x))
+let id = 1;
+let done = false
 
-console.log(qs.stringify(y))
+for (let i = 0; i < todo.length; i++) {
+    if (id === todo[i].id) {
+        newTodos.push({ ...todo[i], done })
+    } else {
+        newTodos.push({ ...todo[i] })
+    }
+}
 
-// let obj = {
-//     '队长': '谢廷玉',
-//     '队伍人数': 5,
-//     '选题': 23
-// }
-
-// console.log(qs.stringify(obj))
+console.log(newTodos)

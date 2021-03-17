@@ -4,7 +4,7 @@ const { AchievePath } = require('../data/path')
 //辅导员设计的成果
 class Achievement {
     //构造函数
-    constructor(id, name) {
+    constructor(id, name, level) {
         //成果的id,主键
         this.id = id
         //成果的名称
@@ -14,7 +14,7 @@ class Achievement {
         //要求学生填写的属性
         this.studentAttr = {}
         //成果级别,0未确定,1国家级,2省级..
-        this.level = 0
+        this.level = level ? level : 0
         //录入时间
         this.createdAt = new Date()
     }
