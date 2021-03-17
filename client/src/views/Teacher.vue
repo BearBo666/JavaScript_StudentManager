@@ -43,6 +43,7 @@
             </template>
             <el-menu-item index="/desgin">设计成果</el-menu-item>
             <el-menu-item index="/examine">审核成果</el-menu-item>
+            <el-menu-item index="/list">所有成果</el-menu-item>
           </el-submenu>
 
           <el-submenu index="rank">

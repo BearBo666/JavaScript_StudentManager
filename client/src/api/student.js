@@ -21,7 +21,7 @@ export function StudentApply(data) {
 //学生查看自己申请的成果
 export function StudentAchieve(params) {
     return request({
-        url: '/student/list',
+        url: '/student/index',
         method: 'get',
         params: params
     })
@@ -30,7 +30,7 @@ export function StudentAchieve(params) {
 //学生查看可申请的成果
 export function AchieveList() {
     return request({
-        url: '/student/index',
+        url: '/student/list',
         method: 'get',
     })
 }

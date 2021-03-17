@@ -4,8 +4,8 @@ import request from '@/util/request.js'
 export function TeacherLogin(params) {
     return request({
         url: '/teacher/login',
-        method: 'get',
-        params: params
+        method: 'post',
+        data: params
     })
 }
 
@@ -15,6 +15,14 @@ export function TeacherDesgin(data) {
         url: '/teacher/desgin',
         method: 'post',
         data: data
+    })
+}
+
+//辅导员查看所有未审核成果
+export function GetUnexamined() {
+    return request({
+        url: '/teacher/list',
+        method: 'get'
     })
 }
 
@@ -28,6 +36,17 @@ export function TeacherExamine(data) {
 }
 
 //辅导员查看学生申请排名
-
+export function StudentRank() {
+    return request({
+        url: '/teacher/stuRank',
+        method: 'get',
+    })
+}
 
 //辅导员查看成果申请排名
+export function AchieveRank() {
+    return request({
+        url: '/teacher/achRank',
+        method: 'get'
+    })
+}

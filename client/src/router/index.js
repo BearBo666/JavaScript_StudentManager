@@ -8,6 +8,7 @@ import Desgin from '../components/teacher/Desgin.vue'
 import Examine from '../components/teacher/Examine.vue'
 import Rank from '../components/teacher/Rank.vue'
 import StudentRank from '../components/teacher/StudentRank.vue'
+import List from '../components/teacher/List.vue'
 //引入学生子路由
 import Apply from '../components/student/Apply.vue'
 import Mine from '../components/student/Mine.vue'
@@ -32,6 +33,7 @@ const routes = [
     children: [
       { path: '/desgin', component: Desgin },
       { path: '/examine', component: Examine },
+      { path: '/list', component: List },
       { path: '/rank', component: Rank },
       { path: '/stuRank', component: StudentRank }
     ]

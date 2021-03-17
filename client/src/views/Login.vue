@@ -50,13 +50,15 @@
 </template>
 
 <script>
+import { StudentLogin } from "../api/student";
+import { TeacherLogin } from "../api/teacher";
 export default {
   data() {
     return {
       // 登录表单的数据绑定
       loginForm: {
-        account: "liuguangsheng",
-        password: "123456",
+        account: "",
+        password: "wust123456",
       },
       //平台使用人身份,true老师,false学生
       role: false,
@@ -69,10 +71,26 @@ export default {
     },
     //登录
     async login() {
+      console.log("111");
       if (this.role) {
-        this.$router.push("/teacher");
+        const { data } = await TeacherLogin(this.loginForm);
+        console.log(data);
+        if (data.status == 200) {
+          this.$message.success("登录成功！");
+          this.$router.push("/teacher");
+        } else {
+          this.$message.error("登录失败,请检查账号或网络！");
+        }
       } else {
-        this.$router.push("/student");
+        const { data } = await StudentLogin(this.loginForm);
+        console.log(data);
+        if (data.status == 200) {
+          this.$message.success("登录成功！");
+          window.localStorage.setItem("stuNum", this.loginForm.account);
+          this.$router.push("/student");
+        } else {
+          this.$message.error("登录失败,请检查账号或网络！");
+        }
       }
     },
   },

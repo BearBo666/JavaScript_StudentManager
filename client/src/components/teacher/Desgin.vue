@@ -34,7 +34,7 @@
 
     <!-- 第二步 -->
     <div v-if="active == 2" class="step">
-      <div v-for="(attr, i) in form.attribute" :key="i">
+      <div v-for="(attr, i) in form.attrs" :key="i">
         <el-form :model="attr" :inline="true" class="demo-form-inline">
           <el-form-item label="属性名称">
             <el-input v-model="attr.name"></el-input>
@@ -48,19 +48,19 @@
         type="primary"
         icon="el-icon-minus"
         circle
-        @click="form.attribute.pop()"
+        @click="form.attrs.pop()"
       ></el-button>
       <el-button
         type="primary"
         icon="el-icon-plus"
         circle
-        @click="form.attribute.push({})"
+        @click="form.attrs.push({})"
       ></el-button>
     </div>
 
     <!-- 第三步 -->
     <div v-if="active == 3" class="step">
-      <div v-for="(attr, i) in form.studentAttr" :key="i">
+      <div v-for="(attr, i) in form.studentAttr" :key="i + 1000">
         <el-form :model="attr" :inline="true" class="demo-form-inline">
           <el-form-item label="属性名称">
             <el-input v-model="attr.name"></el-input>
@@ -92,13 +92,13 @@
     <div v-if="active == 4" class="step">
       <span class="font-weight">{{ form.name }}</span>
       <span class="font-weight">{{ this.level }}</span>
-      <div v-for="(attr, i) in form.attribute" :key="i">
+      <div v-for="(attr, i) in form.attrs" :key="i + 20000">
         <span class="font-weight">{{ attr.name + ":" }}</span>
         <span class="font-light">{{ attr.value }}</span>
       </div>
-      <span>学生待填项：</span>
-      <div v-for="(attr, i) in form.studentAttr" :key="i">
-        <span class="font-weight">{{ attr.name }}</span>
+      <span class="font-weight">学生待填项：</span>
+      <div v-for="(attr, i) in form.studentAttr" :key="i + 30000">
+        <span>{{ attr.name }}</span>
         <span class="font-weight">{{
           attr.required == true ? "必填" : "非必填"
         }}</span>
@@ -117,6 +117,8 @@
 </template>
 
 <script>
+import qs from "qs";
+import { TeacherDesgin } from "../../api/teacher";
 export default {
   data() {
     return {
@@ -125,17 +127,19 @@ export default {
       form: {
         name: "",
         level: "",
-        attribute: [],
+        attrs: [],
         studentAttr: [],
       },
     };
   },
   methods: {
+    //上一步
     preStep() {
       if (this.active > 1) {
         this.active--;
       }
     },
+    //下一步
     nextStep() {
       if (this.active < 4) {
         this.active++;
@@ -143,8 +147,29 @@ export default {
         this.active = 1;
       }
     },
-    submit() {
-      console.log(this.form);
+    //提交设计
+    async submit() {
+      const { data } = await TeacherDesgin({
+        name: this.form.name,
+        level: this.form.level,
+        attrs: this.attrs,
+        studentAttr: this.studentAttr,
+      });
+      if (data.status == 200) {
+        this.$notify({
+          title: "成功录入",
+          type: "success",
+          position: "bottom-right",
+          message: `成功录入成果${this.form.name}`,
+        });
+      } else {
+        this.$notify({
+          title: "录入失败",
+          type: "error",
+          position: "bottom-right",
+          message: `成果${this.form.name}录入失败,请检查表单是否完整,或者网络是否通畅`,
+        });
+      }
     },
   },
   computed: {
@@ -163,6 +188,12 @@ export default {
         default:
           return "不确定";
       }
+    },
+    attrs() {
+      return qs.stringify(this.form.attrs);
+    },
+    studentAttr() {
+      return qs.stringify(this.form.studentAttr);
     },
   },
 };
