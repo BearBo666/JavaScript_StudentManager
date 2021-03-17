@@ -20,7 +20,7 @@ class Hash {
         return sum % n
     }
 
-    //插入key-value 或 key-field-value
+    //插入key-value
     insert(key, value) {
         //先计算得到此key的下标
         const index = this.myHashFunction(key, this.size)
@@ -84,6 +84,30 @@ class Hash {
         }
 
         return values
+    }
+
+    //得到所有的key
+    keys() {
+        let keys = []
+
+        //遍历storage存储
+        for (let i = 0; i < this.size; i++) {
+            //得到此下标的数组和长度
+            const arrayAtIndex = this.storage[i]
+            const length = arrayAtIndex ? arrayAtIndex.length : 0
+
+            //判断此下标有没有记录key
+            if (length == 0) {
+                continue
+            } else {
+                //遍历此下标内所有的键值对
+                for (let j = 0; j < length; j++) {
+                    keys.push(arrayAtIndex[j][0])
+                }
+            }
+        }
+
+        return keys
     }
 
 

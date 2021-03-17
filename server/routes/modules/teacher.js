@@ -59,9 +59,7 @@ function Desgin(params) {
             //添加学生属性
             if (studentAttr) {
                 let stuAttribute = qs.parse(studentAttr)
-                console.log(stuAttribute)
                 for (let i = 0; i < Object.keys(stuAttribute).length; i++) {
-                    console.log(stuAttribute[i].name)
                     newAchievement.addStudentAttr(stuAttribute[i].name, stuAttribute[i].required)
                 }
             }
@@ -100,7 +98,7 @@ function Examine(stuNum, achievementId, newStatus) {
 }
 
 //辅导员查看学生申请排名
-function GetAllStudent() {
+function GetStudentRank() {
     return new Promise((resolve, reject) => {
         let result = []
         //得到所有学生学号
@@ -108,8 +106,10 @@ function GetAllStudent() {
 
         //计算每个学号申请的成果个数
         for (let i = 0; i < stuNumArray.length; i++) {
+            //学号
             let stuNum = stuNumArray[i]
-            let fieldSet = global.$StudentAchieve.fieldSet()
+            //该学号的所有申请成果
+            let fieldSet = global.$StudentAchieve.fieldSet(stuNum)
             if (fieldSet == null) {
                 var achievementNum = 0
             } else {
@@ -131,10 +131,45 @@ function GetAllStudent() {
 }
 
 //辅导员查看成果申请人数排名
+function GetAchieveRank() {
+    return new Promise((resolve, reject) => {
+        let ids = []
+        let allAchievement = global.$Achievement.getAll()
+        //先得到所有学生的成果
+        let allStudent = global.$StudentAchieve.keys()
+        for (let i = 0; i < allStudent.length; i++) {
+            //逐一得到学号
+            let stuNum = allStudent[i]
+            //得到此学生的所有成果
+            let achievement = global.$StudentAchieve.fieldSet(stuNum)
+            let id = achievement ? achievement.keys() : []
+            //连接到id
+            ids = [...ids, ...id]
+        }
+        //遍历所有成果,计算每个成果的申请人数
+        for (let i = 0; i < allAchievement.length; i++) {
+            allAchievement[i].number = 0
+            for (let j = 0; j < ids.length; j++) {
+                if (ids[j] == allAchievement[i].id) {
+                    allAchievement[i].number++
+                }
+            }
+        }
+
+        //排序
+        allAchievement = Sort(allAchievement, 'number', -1)
+
+        resolve({
+            status: 200,
+            data: allAchievement
+        })
+    })
+}
 
 module.exports = {
     Login,
     Desgin,
     Examine,
-    GetAllStudent
+    GetStudentRank,
+    GetAchieveRank
 }

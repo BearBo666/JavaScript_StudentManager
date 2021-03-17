@@ -18,6 +18,7 @@ global.$StudentAchieve = new HashTable(100)
 app.use(cors())
 
 //解析请求体
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //引入路由

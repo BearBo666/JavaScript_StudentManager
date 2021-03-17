@@ -109,7 +109,6 @@ function GetOwnAchieve(account) {
         } else {
             let fieldSet = global.$StudentAchieve.fieldSet(account)
 
-            console.log(fieldSet.getAll())
             resolve({
                 status: 200,
                 data: fieldSet ? fieldSet.getAll() : []
