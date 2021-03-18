@@ -2,7 +2,7 @@ const cors = require('cors')
 const express = require('express');
 const bodyParser = require('body-parser')
 
-//引入数据解构
+//引入数据解构 
 const Hash = require('./struct/hash')
 const HashTable = require('./struct/hashTable')
 

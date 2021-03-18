@@ -71,7 +71,6 @@ export default {
     },
     //登录
     async login() {
-      console.log("111");
       if (this.role) {
         const { data } = await TeacherLogin(this.loginForm);
         console.log(data);
@@ -83,7 +82,6 @@ export default {
         }
       } else {
         const { data } = await StudentLogin(this.loginForm);
-        console.log(data);
         if (data.status == 200) {
           this.$message.success("登录成功！");
           window.localStorage.setItem("stuNum", this.loginForm.account);

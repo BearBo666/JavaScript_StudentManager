@@ -1,5 +1,5 @@
 const { readFileToArr } = require('../../util/File')
-const { Sort } = require('../../util/Sort')
+const { quickSort } = require('../../util/quickSort')
 const Achievement = require('../../models/achievement')
 const { updateStuAchieve } = require('./common')
 const { TeacherPath, StudentPath } = require('../../data/path')
@@ -154,11 +154,12 @@ function GetStudentRank() {
             })
         }
 
-        result = Sort(result, 'achievementNum', -1)
+        //进行快速排序
+        result = quickSort(result, 'achievementNum')
 
         resolve({
             status: 200,
-            data: result
+            data: result.reverse()
         })
     })
 }
@@ -168,6 +169,7 @@ function GetAchieveRank() {
     return new Promise((resolve, reject) => {
         let ids = []
         let allAchievement = global.$Achievement.getAll()
+
         //先得到所有学生的成果
         let allStudent = global.$StudentAchieve.keys()
         for (let i = 0; i < allStudent.length; i++) {
@@ -179,6 +181,8 @@ function GetAchieveRank() {
             //连接到id
             ids = [...ids, ...id]
         }
+
+
         //遍历所有成果,计算每个成果的申请人数
         for (let i = 0; i < allAchievement.length; i++) {
             allAchievement[i].number = 0
@@ -190,11 +194,11 @@ function GetAchieveRank() {
         }
 
         //排序
-        allAchievement = Sort(allAchievement, 'number', -1)
+        let result = quickSort(allAchievement, 'number')
 
         resolve({
             status: 200,
-            data: allAchievement
+            data: result.reverse()
         })
     })
 }
