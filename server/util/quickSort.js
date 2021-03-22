@@ -1,4 +1,4 @@
-//快速排序  默认升序
+//快速排序
 function quickSort(arr, key) {
     if (arr.length <= 1) { return arr; }
 
